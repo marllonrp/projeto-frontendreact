@@ -12,7 +12,11 @@ font-family: 'EB Garamond', serif;
 export const MainHeader = styled.div`
 display: flex;
 width: 100vw;
-height: 50px;`
+height: 65px;
+justify-content: space-between;
+align-items: center;
+padding-left: 10vw;
+color: gray;`
 
 export const MainBody = styled.div `
 display:flex;

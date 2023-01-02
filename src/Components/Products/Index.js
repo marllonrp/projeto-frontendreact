@@ -3,6 +3,8 @@ import { Filter } from "./Filter/Filter.js"
 import {CardContainer, FilterContainer, Main, MainBody, MainHeader} from "./Styled.js"
 import listProducts from "./List-products.json"
 import { useState } from "react"
+import { Pages } from "./Pages/Pages.js"
+import { useEffect } from "react"
 
 export const Products = (props) => {
     
@@ -13,9 +15,56 @@ const [categorySeries, setCategorySeries] = useState("")
 const [categoryOthers, setCategoryOthers] = useState("")
 const [order, setOrder] = useState("")
 
+const itemsPerPage = 6
+const [currentPage, setCurrentPage] = useState(0);
+const [totalItems, setTotalItems] = useState(listProducts.length)
+const startindex = currentPage*itemsPerPage
+const endIndex = startindex + itemsPerPage
+const [pages, setPages] = useState(Math.ceil(totalItems / itemsPerPage));
+const [itemsControl, setItemsControl] = useState(totalItems)
+
+let teste
+
+if (currentPage < 0){
+    setCurrentPage(0)
+}
+
+if (currentPage >= pages){
+    setCurrentPage(pages-1)
+} 
+
+
+const subTotalItems = (array) =>  {
+    teste = array.length}
+
+useEffect (()=>{
+    setTotalItems(subTotalItems=>subTotalItems)
+},[itemsControl])
+
+useEffect (()=>{
+    setItemsControl(totalItems)
+},[totalItems])
+
+
+const refereshItemsPages = (product) => {
+    const array = [...props.arrayItemsInPage]
+    const productsFound = array.find(
+        (products) => products.id === array.id
+      );
+      if (!productsFound) {
+        array.push(product);}
+    props.setArrayItemsInPage(array)
+}
+
+console.log(props.arrayItemsInPage)
     return (
         <Main>
             <MainHeader>
+                <h3>Catálogo</h3>
+                <h3>Página {currentPage+1} de {pages} | {totalItems} resultado(s)</h3>
+                <Pages setCurrentPage = {setCurrentPage}
+                currentPage ={currentPage}
+                pages = {pages}/>
             </MainHeader>
             <MainBody>
                 <FilterContainer>
@@ -83,14 +132,23 @@ const [order, setOrder] = useState("")
                         }
                        
                     })
+                    .filter((products,index,array)=>{
+                    
+                        return (products) 
+                    })
+                    .slice(startindex,endIndex)
                     .map((products)=>{
                         return (
                             <Card key = {products.id}
                             product= {products}
-                            addToCart = {props.addToCart}/>
+                            addToCart = {props.addToCart}
+                            refereshItemsPages ={refereshItemsPages}
+                            totalItems = {totalItems}/>
                         )
-                    })}
+                       
+                    })
                     
+                   }
                 </CardContainer>
             </MainBody>
         </Main>
