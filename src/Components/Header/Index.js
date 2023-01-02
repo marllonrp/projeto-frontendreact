@@ -13,7 +13,6 @@ import {
 import cartimage from "./assets/Cart-image.png";
 import buscarImg from "./assets/buscar.png";
 import { useState } from "react";
-import { Cart } from "./Cart/Cart";
 
 export const Header = (props) => {
   const { setQuerry } = props;
@@ -21,8 +20,7 @@ export const Header = (props) => {
   const search = () => {
     setQuerry(searchBar);
   };
-  const [cartHiden, setCartHiden] = useState(false)
-  const [cartVisible, setCartVisible] = useState(false);
+
   const totalItens = props.cart.reduce((acc, product) => (product.quantity) + acc,0)
 
   return (
@@ -50,21 +48,10 @@ export const Header = (props) => {
         </InputContainer>
         <CartContainerButton
           onClick={() => {
-            setCartVisible(true);
-            setCartHiden(true)
+            props.setCartVisible(true);
           }}
         >
-          {cartVisible ? (
-            <Cart
-              setCartVisible={setCartVisible}
-              cart={props.cart}
-              cartVisible={cartVisible}
-              deleteItem={props.deleteItem}
-              setCartHiden={setCartHiden}
-              clearAllCart={props.clearAllCart}
-              cartQuantity={props.cartQuantity}
-            />
-          ) : null}
+         
           {totalItens>=1?(
           <Note>
             {totalItens}

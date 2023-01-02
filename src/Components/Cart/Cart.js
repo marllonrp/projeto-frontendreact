@@ -15,15 +15,25 @@ import {
 import { CartCard } from "./CartCard/CartCard";
 
 export const Cart = (props) => {
-  console.log(props);
 
-  const subTotal = props.cart.reduce(
+
+
+  const subTotal = (array) => {return array.reduce(
     (acc, product) => product.price * product.quantity + acc,
     0
-  );
+  )};
 
-  const [message, setMessage] = useState(false);
+  const [total, setTotal] = useState(subTotal(props.cart))
+  console.log(props.cart.length)
+
+  const chageTotal = ()=> {
+    if(props.cart.length>=1){
+      setTotal(subTotal(props.cart))
+    }else {setTotal(0)}
   
+  } 
+  
+  const [message, setMessage] = useState(false);
 
   const shop = () => {
     if (props.cart.length >= 1) {
@@ -36,13 +46,10 @@ export const Cart = (props) => {
 
 console.log (props.cart)
   return (
-    <CartWrapper onClick={()=>props.setCartVisible(false)}>
+    <CartWrapper>
       <CartContainer>
         <CloseButton
-          onClick={() => {
-            return (props.setCartVisible(false),
-            props.setCartHiden(false),
-            console.log(props.cartVisible))
+          onClick={() => {props.setCartVisible(false)
           }}
         />
         <CartContent>
@@ -51,6 +58,7 @@ console.log (props.cart)
             <EmptyCart
               onClick={() => {
                 props.clearAllCart();
+                chageTotal()
               }}
             >
               Esvaziar carrinho
@@ -66,6 +74,7 @@ console.log (props.cart)
                   deleteItem={props.deleteItem}
                   cartQuantity={props.cartQuantity}
                   subTotal={subTotal}
+                  chageTotal={chageTotal}
                 />
               );
             })}
@@ -83,11 +92,12 @@ console.log (props.cart)
           <ButtonContainer>
             <PriceContainer>
               <p>Subtotal</p>
-              <h1>R${subTotal},00</h1>
+              <h1>R${total},00</h1>
             </PriceContainer>
             <Shop
               onClick={() => {
-                shop();
+                shop()
+                chageTotal();
               }}
             >
               Finalizar compra
